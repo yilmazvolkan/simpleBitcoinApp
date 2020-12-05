@@ -2,7 +2,6 @@ package com.yilmazvolkan.simplebitcoinapp.ui.main
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.fragments.ShowGraphFragment

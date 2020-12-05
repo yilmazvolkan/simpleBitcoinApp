@@ -1,6 +1,5 @@
 package com.yilmazvolkan.simplebitcoinapp.ui.main
 
-import com.yilmazvolkan.simplebitcoinapp.data.ApiService
 import dagger.Module
 import dagger.Provides
 
@@ -14,7 +13,7 @@ class MainActivityModule {
 
 
     @Provides
-    fun provideMainPresenter(mainView: MainView, apiService: ApiService): MainPresenter {
-        return MainPresenterImpl(mainView, apiService)
+    fun provideMainPresenter(mainView: MainView): MainPresenter {
+        return MainPresenterImpl(mainView)
     }
 }
