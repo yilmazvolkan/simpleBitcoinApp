@@ -39,7 +39,7 @@ class BitcoinRepository {
     }
 
     private fun insertData(): Disposable {
-        return bitcoinApiService.getBitcoinValues("1year")
+        return bitcoinApiService.getBitcoinValues("1year") //TODO make a constant or change it in view
             .subscribeOn(Schedulers.io())
             .subscribeWith(subscribeToDatabase())
     }
@@ -82,6 +82,8 @@ class BitcoinRepository {
                         _isError.postValue(false)
                         _bitcoinData.postValue(dataEntityList.toDataList())
                     } else {
+                        // TODO change it to fetch every time it has connection
+                        // Try first fetching data from the database, if only the database is empty then insertData gets triggered.
                         insertData()
                     }
                     _isInProgress.postValue(false)

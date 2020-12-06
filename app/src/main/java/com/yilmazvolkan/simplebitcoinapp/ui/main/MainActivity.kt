@@ -3,20 +3,17 @@ package com.yilmazvolkan.simplebitcoinapp.ui.main
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.simplebitcoinapp.R
+import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.fragments.ShowGraphFragment
+import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
-
-    /*@Inject
-    lateinit var mainPresenter: MainPresenter
-
-     */
-
     private var showGraphFragment: ShowGraphFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +25,6 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        //mainPresenter.loadMain()
 
         startFragment()
     }

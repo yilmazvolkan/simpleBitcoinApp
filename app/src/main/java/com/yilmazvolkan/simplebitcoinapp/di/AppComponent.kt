@@ -1,7 +1,9 @@
 package com.yilmazvolkan.simplebitcoinapp.di
 
+import com.yilmazvolkan.simplebitcoinapp.fragments.ShowGraphFragment
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
 import com.yilmazvolkan.simplebitcoinapp.ui.main.MainActivity
+import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -11,5 +13,7 @@ interface AppComponent {
 
     fun inject(bitcoinRepository: BitcoinRepository)
 
-    fun inject(mainActivity: MainActivity)
+    fun inject(viewModel: CoinViewModel)
+
+    fun inject(showGraphFragment: ShowGraphFragment)
 }

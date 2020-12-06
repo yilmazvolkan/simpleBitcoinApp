@@ -5,17 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.databinding.FragmentShowGraphBinding
+import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
+import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
 import com.yilmazvolkan.simplebitcoinapp.ui.CustomMarker
+import com.yilmazvolkan.simplebitcoinapp.util.CoinViewModelFactory
 import com.yilmazvolkan.simplebitcoinapp.util.inflate
+import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 
 class ShowGraphFragment : Fragment() {
 
     private val binding: FragmentShowGraphBinding by inflate(R.layout.fragment_show_graph)
+    private lateinit var coinViewModel: CoinViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,29 +33,63 @@ class ShowGraphFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        DaggerAppComponent.create().inject(this)
 
+        initializeViewModel()
+        observeCoinViewModel()
+    }
+
+    private fun initializeViewModel() {
+        activity?.let {
+            coinViewModel = ViewModelProvider(
+                this,
+                CoinViewModelFactory(it.application)
+            ).get(CoinViewModel::class.java)
+        }
+    }
+
+
+    private fun observeCoinViewModel() = with(coinViewModel) {
+        repository.isInProgress.observe(viewLifecycleOwner, { isLoading ->
+            isLoading.let {
+                if (it) {
+                    binding.linearLayoutChart.visibility = View.GONE
+                    binding.fetchProgress.visibility = View.VISIBLE
+                } else {
+                    binding.fetchProgress.visibility = View.GONE
+                }
+            }
+        })
+        repository.isError.observe(viewLifecycleOwner, { isError ->
+            isError.let {
+                if (it) {
+                    // TODO disableViewsOnError()
+                } else {
+                    binding.fetchProgress.visibility = View.VISIBLE
+                }
+            }
+        })
+        repository.bitcoinData.observe(viewLifecycleOwner, { giphies ->
+            giphies.let {
+                if (it != null && it.isNotEmpty()) {
+                    binding.fetchProgress.visibility = View.VISIBLE
+                    binding.linearLayoutChart.visibility = View.VISIBLE
+                    loadDataIntoChart(it)
+                    binding.fetchProgress.visibility = View.GONE
+                } else {
+                    // TODO disableViewsOnError()
+                }
+            }
+        })
+    }
+
+
+    private fun loadDataIntoChart(coinList: List<BitcoinData>) {
         val entries = ArrayList<Entry>()
 
-
-        entries.add(Entry(1f, 10f))
-        entries.add(Entry(2f, 2f))
-        entries.add(Entry(3f, 7f))
-        entries.add(Entry(4f, 20f))
-        entries.add(Entry(5f, 16f))
-
-        entries.add(Entry(6f, 10f))
-        entries.add(Entry(7f, 2f))
-        entries.add(Entry(8f, 7f))
-        entries.add(Entry(9f, 20f))
-        entries.add(Entry(10f, 16f))
-
-
-        entries.add(Entry(11f, 10f))
-        entries.add(Entry(12f, 2f))
-        entries.add(Entry(13f, 7f))
-        entries.add(Entry(14f, 20f))
-        entries.add(Entry(15f, 16f))
-
+        for (e in coinList) {
+            entries.add(Entry(e.x.toFloat(), e.y))
+        }
 
         val vl = LineDataSet(entries, "My Type")
 
@@ -66,7 +107,7 @@ class ShowGraphFragment : Fragment() {
 
 
         binding.lineChart.axisRight.isEnabled = false
-        binding.lineChart.xAxis.axisMaximum = 30+0.1f
+        binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
 
 
         binding.lineChart.setTouchEnabled(true)
