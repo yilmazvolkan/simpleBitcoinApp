@@ -10,6 +10,7 @@ import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinResult
 import com.yilmazvolkan.simplebitcoinapp.data.database.DataDao
+import com.yilmazvolkan.simplebitcoinapp.models.DateModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -23,6 +24,9 @@ class BitcoinRepository {
 
     @Inject
     lateinit var bitcoinDao: DataDao
+
+    @Inject
+    lateinit var dateModel: DateModel
 
     private val _bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
     val bitcoinData: LiveData<List<BitcoinData>>
@@ -66,6 +70,8 @@ class BitcoinRepository {
 
             override fun onComplete() {
                 Log.v("insertData()", "insert success")
+                dateModel.updateTodayDate()
+                bitcoinDao.clearTable()
                 getBitcoinQuery()
             }
         }
@@ -79,13 +85,13 @@ class BitcoinRepository {
             .subscribe(
                 { dataEntityList ->
                     _isInProgress.postValue(true)
-                    if (dataEntityList != null && dataEntityList.isNotEmpty()) {
+                    if (dataEntityList != null && dataEntityList.isNotEmpty() && dateModel.checkDates()) {
                         _isError.postValue(false)
                         _bitcoinData.postValue(dataEntityList.toDataList())
+                        Log.d("TEST", "Loaded from database")
                     } else {
-                        // TODO change it to fetch every time it has connection
-                        // Try first fetching data from the database, if only the database is empty then insertData gets triggered.
                         insertData()
+                        Log.d("TEST", "Loaded from remote")
                     }
                     _isInProgress.postValue(false)
 

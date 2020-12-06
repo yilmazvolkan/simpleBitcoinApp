@@ -22,5 +22,4 @@ class CoinViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.clear()
     }
-
 }

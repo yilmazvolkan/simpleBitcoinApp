@@ -1,7 +1,7 @@
 package com.yilmazvolkan.simplebitcoinapp.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.databinding.FragmentShowGraphBinding
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
@@ -19,8 +20,15 @@ import com.yilmazvolkan.simplebitcoinapp.ui.CustomMarker
 import com.yilmazvolkan.simplebitcoinapp.ui.inflate
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ShowGraphFragment : Fragment() {
+
+    @Inject
+    lateinit var bitcoinApplication: BitcoinApplication
 
     private val binding: FragmentShowGraphBinding by inflate(R.layout.fragment_show_graph)
     private lateinit var coinViewModel: CoinViewModel
@@ -45,7 +53,7 @@ class ShowGraphFragment : Fragment() {
         activity?.let {
             coinViewModel = ViewModelProvider(
                 this,
-                CoinViewModelFactory(it.application)
+                CoinViewModelFactory(bitcoinApplication)
             ).get(CoinViewModel::class.java)
         }
     }
@@ -71,11 +79,12 @@ class ShowGraphFragment : Fragment() {
                 }
             }
         })
-        repository.bitcoinData.observe(viewLifecycleOwner, { giphies ->
-            giphies.let {
+        repository.bitcoinData.observe(viewLifecycleOwner, { coinValues ->
+            coinValues.let {
                 if (it != null && it.isNotEmpty()) {
                     binding.fetchProgress.visibility = View.VISIBLE
                     binding.lineChart.visibility = View.VISIBLE
+                    updateTodayDate()
                     loadDataIntoChart(it)
                     binding.fetchProgress.visibility = View.GONE
                 } else {
@@ -85,14 +94,21 @@ class ShowGraphFragment : Fragment() {
         })
     }
 
+    private fun updateTodayDate() {
+        val currentTime = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+
+        val sharedPreference =
+            requireContext().getSharedPreferences("LAST_UPDATE", Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putString("UPDATE_DAY", formatter.format(currentTime))
+        editor.apply()
+    }
 
     private fun loadDataIntoChart(coinList: List<BitcoinData>) {
-
         val entries = ArrayList<Entry>()
 
-        Log.d("volkan", coinList.size.toString())
         for ((index, value) in coinList.withIndex()) {
-            Log.d("volkan", value.y.toString())
             entries.add(Entry(index.toFloat(), value.y))
         }
 
@@ -130,10 +146,11 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.description.text = "Days"
         binding.lineChart.description.textColor =
             ContextCompat.getColor(requireContext(), R.color.gray)
-        binding.lineChart.setNoDataText("No bitcoin data yet!")
+        binding.lineChart.setNoDataText("No coin data yet!")
 
 
         val markerView = CustomMarker(requireContext(), R.layout.marker_view)
+        markerView.chartView = binding.lineChart // For bounds control
         binding.lineChart.marker = markerView
     }
 

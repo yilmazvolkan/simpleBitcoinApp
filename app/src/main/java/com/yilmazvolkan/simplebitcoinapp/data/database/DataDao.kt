@@ -15,4 +15,7 @@ interface DataDao {
 
     @Query("SELECT * from data")
     fun queryData(): Single<List<DataEntity>>
+
+    @Query("DELETE FROM data")
+    fun clearTable()
 }

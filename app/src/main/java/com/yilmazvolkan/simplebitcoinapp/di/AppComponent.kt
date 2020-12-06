@@ -1,5 +1,6 @@
 package com.yilmazvolkan.simplebitcoinapp.di
 
+import com.yilmazvolkan.simplebitcoinapp.models.DateModel
 import com.yilmazvolkan.simplebitcoinapp.ui.fragments.ShowGraphFragment
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
@@ -15,4 +16,6 @@ interface AppComponent {
     fun inject(viewModel: CoinViewModel)
 
     fun inject(showGraphFragment: ShowGraphFragment)
+
+    fun inject(dateModel: DateModel)
 }

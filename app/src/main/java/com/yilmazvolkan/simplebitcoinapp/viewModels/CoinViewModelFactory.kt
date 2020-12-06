@@ -5,7 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class CoinViewModelFactory(val app: Application) :
+@Suppress("UNCHECKED_CAST")
+class CoinViewModelFactory(app: Application) :
     ViewModelProvider.AndroidViewModelFactory(app) {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
