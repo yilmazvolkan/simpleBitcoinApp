@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
+import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinResult
+import com.yilmazvolkan.simplebitcoinapp.data.database.DataDao
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataEntityList
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataList
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
-import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinResult
-import com.yilmazvolkan.simplebitcoinapp.data.database.DataDao
 import com.yilmazvolkan.simplebitcoinapp.models.DateModel
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -71,7 +72,6 @@ class BitcoinRepository {
             override fun onComplete() {
                 Log.v("insertData()", "insert success")
                 dateModel.updateTodayDate()
-                bitcoinDao.clearTable()
                 getBitcoinQuery()
             }
         }
@@ -90,8 +90,7 @@ class BitcoinRepository {
                         _bitcoinData.postValue(dataEntityList.toDataList())
                         Log.d("TEST", "Loaded from database")
                     } else {
-                        insertData()
-                        Log.d("TEST", "Loaded from remote")
+                        clearAll()
                     }
                     _isInProgress.postValue(false)
 
@@ -103,6 +102,27 @@ class BitcoinRepository {
                     _isInProgress.postValue(false)
                 }
             )
+    }
+
+    private fun clearAll(): Disposable {
+        return clearTable().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                insertData()
+                Log.d("TEST", "Loaded from remote")
+            }, {/*error*/ })
+    }
+
+    private fun clearTable(): Observable<Boolean> {
+        return Observable.create { emitter ->
+            try {
+                bitcoinDao.clearTable()
+            } catch (e: Exception) {
+                emitter.onError(e)
+            }
+            emitter.onNext(true)
+            emitter.onComplete()
+        }
     }
 
     fun fetchDataFromDatabase(): Disposable = getBitcoinQuery()
