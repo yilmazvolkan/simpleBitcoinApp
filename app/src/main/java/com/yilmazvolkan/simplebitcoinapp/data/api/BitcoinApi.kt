@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface BitcoinApi {
 
-    @GET("charts/market-price/")
+    @GET("charts/market-price")
     fun getBitcoinValues(
         @Query("timespan") timespan: String
     ): Flowable<BitcoinResult>
