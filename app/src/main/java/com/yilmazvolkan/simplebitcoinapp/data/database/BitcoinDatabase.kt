@@ -29,5 +29,4 @@ abstract class BitcoinDatabase: RoomDatabase() {
             instance ?: buildDatabase(context).also { instance = it }
         }
     }
-
 }

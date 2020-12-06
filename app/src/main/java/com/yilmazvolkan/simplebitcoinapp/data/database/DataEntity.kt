@@ -11,7 +11,7 @@ data class DataEntity(
     @ColumnInfo(name = "id")
     val id: Int = 0,
     @ColumnInfo(name = "timestamp")
-    val x: Int = 0,
+    val x: Int,
     @ColumnInfo(name = "value")
     val y: Float
 )
