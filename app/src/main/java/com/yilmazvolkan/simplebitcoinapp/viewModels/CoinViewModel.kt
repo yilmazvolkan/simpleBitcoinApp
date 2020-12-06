@@ -1,6 +1,5 @@
 package com.yilmazvolkan.simplebitcoinapp.viewModels
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository

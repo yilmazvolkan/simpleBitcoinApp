@@ -1,6 +1,7 @@
 package com.yilmazvolkan.simplebitcoinapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,10 +86,13 @@ class ShowGraphFragment : Fragment() {
 
 
     private fun loadDataIntoChart(coinList: List<BitcoinData>) {
+
         val entries = ArrayList<Entry>()
 
-        for (e in coinList) {
-            entries.add(Entry(e.x.toFloat(), e.y))
+        Log.d("volkan", coinList.size.toString())
+        for ((i,e) in coinList.withIndex()) {
+            Log.d("volkan", e.y.toString())
+            entries.add(Entry(i.toFloat(), e.y))
         }
 
         val vl = LineDataSet(entries, "My Type")
