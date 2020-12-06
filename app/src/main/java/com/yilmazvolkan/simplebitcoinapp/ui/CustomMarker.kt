@@ -3,6 +3,7 @@ package com.yilmazvolkan.simplebitcoinapp.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.WindowManager
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry

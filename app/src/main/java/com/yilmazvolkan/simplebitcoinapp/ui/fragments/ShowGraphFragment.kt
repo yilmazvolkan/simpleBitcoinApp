@@ -21,7 +21,10 @@ import com.yilmazvolkan.simplebitcoinapp.ui.CustomMarker
 import com.yilmazvolkan.simplebitcoinapp.ui.inflate
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ShowGraphFragment : Fragment() {
 
@@ -95,6 +98,8 @@ class ShowGraphFragment : Fragment() {
         val entries = ArrayList<Entry>()
 
         for ((index, value) in coinList.withIndex()) {
+
+            Log.d("TEST33", convertToDate(value.x))
             entries.add(Entry(index.toFloat(), value.y))
         }
         val lineDataSet = LineDataSet(entries, "Bitcoin")
@@ -144,6 +149,12 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.invalidate()
     }
 
+    private fun convertToDate(unixSeconds: Long): String{
+        val date = Date(unixSeconds * 1000L)
+        val sdf = SimpleDateFormat("dd-MM", Locale.getDefault())
+
+        return sdf.format(date).toString()
+    }
     companion object {
         fun newInstance(): ShowGraphFragment {
             return ShowGraphFragment()
