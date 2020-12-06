@@ -1,10 +1,11 @@
-package com.yilmazvolkan.simplebitcoinapp.fragments
+package com.yilmazvolkan.simplebitcoinapp.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.Entry
@@ -15,9 +16,9 @@ import com.yilmazvolkan.simplebitcoinapp.databinding.FragmentShowGraphBinding
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
 import com.yilmazvolkan.simplebitcoinapp.ui.CustomMarker
-import com.yilmazvolkan.simplebitcoinapp.util.CoinViewModelFactory
-import com.yilmazvolkan.simplebitcoinapp.util.inflate
+import com.yilmazvolkan.simplebitcoinapp.ui.inflate
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
+import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModelFactory
 
 class ShowGraphFragment : Fragment() {
 
@@ -54,7 +55,7 @@ class ShowGraphFragment : Fragment() {
         repository.isInProgress.observe(viewLifecycleOwner, { isLoading ->
             isLoading.let {
                 if (it) {
-                    binding.linearLayoutChart.visibility = View.GONE
+                    binding.lineChart.visibility = View.GONE
                     binding.fetchProgress.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.GONE
@@ -74,7 +75,7 @@ class ShowGraphFragment : Fragment() {
             giphies.let {
                 if (it != null && it.isNotEmpty()) {
                     binding.fetchProgress.visibility = View.VISIBLE
-                    binding.linearLayoutChart.visibility = View.VISIBLE
+                    binding.lineChart.visibility = View.VISIBLE
                     loadDataIntoChart(it)
                     binding.fetchProgress.visibility = View.GONE
                 } else {
@@ -90,27 +91,35 @@ class ShowGraphFragment : Fragment() {
         val entries = ArrayList<Entry>()
 
         Log.d("volkan", coinList.size.toString())
-        for ((i, e) in coinList.withIndex()) {
-            Log.d("volkan", e.y.toString())
-            entries.add(Entry(i.toFloat(), e.y))
+        for ((index, value) in coinList.withIndex()) {
+            Log.d("volkan", value.y.toString())
+            entries.add(Entry(index.toFloat(), value.y))
         }
 
-        val vl = LineDataSet(entries, "My Type")
+        val lineDataSet = LineDataSet(entries, "Bitcoin")
 
-        vl.setDrawValues(false)
-        vl.setDrawFilled(true)
-        vl.lineWidth = 2f
-        vl.fillColor = R.color.chart_background
-        vl.fillAlpha = R.color.chart_line
-
+        lineDataSet.setDrawValues(false)
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.lineWidth = 2f
+        lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.chart_background)
+        lineDataSet.fillAlpha = ContextCompat.getColor(requireContext(), R.color.chart_line)
 
         binding.lineChart.xAxis.labelRotationAngle = 0f
 
 
-        binding.lineChart.data = LineData(vl)
+        binding.lineChart.data = LineData(lineDataSet)
 
 
+        //todo ayrı methoda al
         binding.lineChart.axisRight.isEnabled = false
+        binding.lineChart.xAxis.isEnabled = false
+        binding.lineChart.axisLeft.setDrawGridLines(false)
+        binding.lineChart.axisLeft.textColor =
+            ContextCompat.getColor(requireContext(), R.color.gray)
+        binding.lineChart.axisLeft.axisLineColor =
+            ContextCompat.getColor(requireContext(), R.color.gray)
+        binding.lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.gray)
         binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
 
 
@@ -119,6 +128,8 @@ class ShowGraphFragment : Fragment() {
 
 
         binding.lineChart.description.text = "Days"
+        binding.lineChart.description.textColor =
+            ContextCompat.getColor(requireContext(), R.color.gray)
         binding.lineChart.setNoDataText("No bitcoin data yet!")
 
 

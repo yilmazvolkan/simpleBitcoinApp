@@ -3,13 +3,13 @@ package com.yilmazvolkan.simplebitcoinapp.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataEntityList
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataList
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
-import com.yilmazvolkan.simplebitcoinapp.models.BitcoinResult
+import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinResult
+import com.yilmazvolkan.simplebitcoinapp.data.database.DataDao
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +20,9 @@ class BitcoinRepository {
 
     @Inject
     lateinit var bitcoinApiService: BitcoinApi
+
+    @Inject
+    lateinit var bitcoinDao: DataDao
 
     private val _bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
     val bitcoinData: LiveData<List<BitcoinData>>
@@ -50,9 +53,7 @@ class BitcoinRepository {
             override fun onNext(bitcoinResult: BitcoinResult?) {
                 if (bitcoinResult != null) {
                     val entityList = bitcoinResult.values.toList().toDataEntityList()
-                    BitcoinApplication.database.apply {
-                        dataDao().insertData(entityList)
-                    }
+                    bitcoinDao.insertData(entityList)
                 }
             }
 
@@ -71,7 +72,7 @@ class BitcoinRepository {
     }
 
     private fun getBitcoinQuery(): Disposable {
-        return BitcoinApplication.database.dataDao()
+        return bitcoinDao
             .queryData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

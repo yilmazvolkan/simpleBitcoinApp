@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.yilmazvolkan.simplebitcoinapp.internal.DATABASE_NAME
+import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
+import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
+import javax.inject.Inject
+
+const val DATABASE_NAME = "bitcoin.db" //Room Database
 
 @Database(entities = [DataEntity::class], version = 1)
 abstract class BitcoinDatabase : RoomDatabase() {

@@ -1,11 +1,11 @@
-package com.yilmazvolkan.simplebitcoinapp.ui.main
+package com.yilmazvolkan.simplebitcoinapp.ui.activities
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.simplebitcoinapp.R
-import com.yilmazvolkan.simplebitcoinapp.fragments.ShowGraphFragment
+import com.yilmazvolkan.simplebitcoinapp.ui.fragments.ShowGraphFragment
 
 
 class MainActivity : AppCompatActivity() {

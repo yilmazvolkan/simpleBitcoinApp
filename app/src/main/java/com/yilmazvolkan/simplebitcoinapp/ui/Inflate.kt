@@ -1,4 +1,4 @@
-package com.yilmazvolkan.simplebitcoinapp.util
+package com.yilmazvolkan.simplebitcoinapp.ui
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes

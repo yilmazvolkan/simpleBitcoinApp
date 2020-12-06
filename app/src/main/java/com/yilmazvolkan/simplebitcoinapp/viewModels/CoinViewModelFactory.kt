@@ -1,10 +1,9 @@
-package com.yilmazvolkan.simplebitcoinapp.util
+package com.yilmazvolkan.simplebitcoinapp.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 
 class CoinViewModelFactory(val app: Application) :
     ViewModelProvider.AndroidViewModelFactory(app) {

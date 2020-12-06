@@ -1,12 +1,13 @@
 package com.yilmazvolkan.simplebitcoinapp.data.api
 
-import com.yilmazvolkan.simplebitcoinapp.internal.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+
+const val BASE_URL = "https://api.blockchain.info/"
 
 object BitcoinApiService {
     private fun createOkHttpClient(): OkHttpClient {

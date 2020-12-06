@@ -1,8 +1,9 @@
 package com.yilmazvolkan.simplebitcoinapp.di
 
+import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApiService
-import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
+import com.yilmazvolkan.simplebitcoinapp.data.database.BitcoinDatabase
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
 import dagger.Module
 import dagger.Provides
@@ -18,6 +19,14 @@ class AppModule {
     @Provides
     fun provideBitcoinRepository() = BitcoinRepository()
 
+    @Singleton
     @Provides
-    fun provideListData() = ArrayList<BitcoinData>()
+    fun provideApplication(): BitcoinApplication = BitcoinApplication.instance
+
+    @Singleton
+    @Provides
+    fun provideDB(application: BitcoinApplication) = BitcoinDatabase.invoke(application)
+
+    @Provides
+    fun provideDao(bitcoinDatabase: BitcoinDatabase) = bitcoinDatabase.dataDao()
 }
