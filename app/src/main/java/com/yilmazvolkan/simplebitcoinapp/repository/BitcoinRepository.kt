@@ -29,25 +29,16 @@ class BitcoinRepository {
     @Inject
     lateinit var dateModel: DateModel
 
-    private val _bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
-    val bitcoinData: LiveData<List<BitcoinData>>
-        get() = _bitcoinData
-
-    private val _isInProgress by lazy { MutableLiveData<Boolean>() }
-    val isInProgress: LiveData<Boolean>
-        get() = _isInProgress
-
-    private val _isError by lazy { MutableLiveData<Boolean>() }
-    val isError: LiveData<Boolean>
-        get() = _isError
-
+    val bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
+    val isInProgress by lazy { MutableLiveData<Boolean>() }
+    val isError by lazy { MutableLiveData<Boolean>() }
 
     init {
         DaggerAppComponent.create().inject(this)
     }
 
     private fun insertData(): Disposable {
-        return bitcoinApiService.getBitcoinValues("1year") //TODO make a constant or change it in view
+        return bitcoinApiService.getBitcoinValues(FETCH_TIME)
             .subscribeOn(Schedulers.io())
             .subscribeWith(subscribeToDatabase())
     }
@@ -63,10 +54,10 @@ class BitcoinRepository {
             }
 
             override fun onError(t: Throwable?) {
-                _isInProgress.postValue(true)
+                isInProgress.postValue(true)
                 Log.e("insertData()", "BitcoinResult error: ${t?.message}")
-                _isError.postValue(true)
-                _isInProgress.postValue(false)
+                isError.postValue(true)
+                isInProgress.postValue(false)
             }
 
             override fun onComplete() {
@@ -84,22 +75,22 @@ class BitcoinRepository {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dataEntityList ->
-                    _isInProgress.postValue(true)
+                    isInProgress.postValue(true)
                     if (dataEntityList != null && dataEntityList.isNotEmpty() && dateModel.checkDates()) {
-                        _isError.postValue(false)
-                        _bitcoinData.postValue(dataEntityList.toDataList())
+                        isError.postValue(false)
+                        bitcoinData.postValue(dataEntityList.toDataList())
                         Log.d("TEST", "Loaded from database")
                     } else {
                         clearAll()
                     }
-                    _isInProgress.postValue(false)
+                    isInProgress.postValue(false)
 
                 },
                 {
-                    _isInProgress.postValue(true)
+                    isInProgress.postValue(true)
                     Log.e("getBitcoinQuery()", "Database error: ${it.message}")
-                    _isError.postValue(true)
-                    _isInProgress.postValue(false)
+                    isError.postValue(true)
+                    isInProgress.postValue(false)
                 }
             )
     }
@@ -126,4 +117,8 @@ class BitcoinRepository {
     }
 
     fun fetchDataFromDatabase(): Disposable = getBitcoinQuery()
+
+    companion object{
+        private const val FETCH_TIME = "1year"
+    }
 }
