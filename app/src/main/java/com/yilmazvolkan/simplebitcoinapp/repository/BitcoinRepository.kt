@@ -1,7 +1,6 @@
 package com.yilmazvolkan.simplebitcoinapp.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinResult
@@ -118,7 +117,7 @@ class BitcoinRepository {
 
     fun fetchDataFromDatabase(): Disposable = getBitcoinQuery()
 
-    companion object{
+    companion object {
         private const val FETCH_TIME = "1year"
     }
 }

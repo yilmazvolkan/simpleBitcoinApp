@@ -1,14 +1,9 @@
 package com.yilmazvolkan.simplebitcoinapp.ui.activities
 
-import android.content.Context
-import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.ui.fragments.ShowGraphFragment
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
