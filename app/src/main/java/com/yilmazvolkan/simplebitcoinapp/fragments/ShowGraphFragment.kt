@@ -90,7 +90,7 @@ class ShowGraphFragment : Fragment() {
         val entries = ArrayList<Entry>()
 
         Log.d("volkan", coinList.size.toString())
-        for ((i,e) in coinList.withIndex()) {
+        for ((i, e) in coinList.withIndex()) {
             Log.d("volkan", e.y.toString())
             entries.add(Entry(i.toFloat(), e.y))
         }
@@ -100,8 +100,8 @@ class ShowGraphFragment : Fragment() {
         vl.setDrawValues(false)
         vl.setDrawFilled(true)
         vl.lineWidth = 2f
-        vl.fillColor = R.color.teal_700
-        vl.fillAlpha = R.color.purple_500
+        vl.fillColor = R.color.chart_background
+        vl.fillAlpha = R.color.chart_line
 
 
         binding.lineChart.xAxis.labelRotationAngle = 0f

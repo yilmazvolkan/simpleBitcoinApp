@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_text_size">16sp</dimen>
 
     <dimen name="chart_item_height">250dp</dimen>
     <dimen name="chart_item_margin_vertical">12dp</dimen>
     <dimen name="chart_item_margin_horizontal">4dp</dimen>
-    <dimen name="chart_item_padding">6dp</dimen>
+    <dimen name="chart_item_margin">30dp</dimen>
+
+    <dimen name="chart_item_marker_text_size">10sp</dimen>
+    <dimen name="chart_item_marker_padding">2dp</dimen>
+    <dimen name="chart_item_market_margin_horizontal">4dp</dimen>
 </resources>

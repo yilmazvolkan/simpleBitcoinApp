@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.yilmazvolkan.simplebitcoinapp.internal.DATABASE_NAME
 
 @Database(entities = [DataEntity::class], version = 1)
-abstract class BitcoinDatabase: RoomDatabase() {
+abstract class BitcoinDatabase : RoomDatabase() {
 
     abstract fun dataDao(): DataDao
 

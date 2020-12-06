@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Simple Bitcoin App</string>
+
+    <string name="toolbar_text">Coin App</string>
 </resources>

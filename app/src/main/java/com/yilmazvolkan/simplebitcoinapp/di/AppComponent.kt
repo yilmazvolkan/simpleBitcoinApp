@@ -2,7 +2,6 @@ package com.yilmazvolkan.simplebitcoinapp.di
 
 import com.yilmazvolkan.simplebitcoinapp.fragments.ShowGraphFragment
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
-import com.yilmazvolkan.simplebitcoinapp.ui.main.MainActivity
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import dagger.Component
 import javax.inject.Singleton
