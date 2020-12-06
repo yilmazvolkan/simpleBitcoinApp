@@ -1,4 +1,4 @@
-package com.yilmazvolkan.simplebitcoinapp.dagger
+package com.yilmazvolkan.simplebitcoinapp.di
 
 import com.yilmazvolkan.simplebitcoinapp.ui.main.MainActivity
 import com.yilmazvolkan.simplebitcoinapp.ui.main.MainActivityModule

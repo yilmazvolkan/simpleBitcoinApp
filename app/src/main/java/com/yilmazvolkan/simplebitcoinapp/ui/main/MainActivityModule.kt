@@ -6,7 +6,7 @@ import dagger.Provides
 
 @Module
 class MainActivityModule {
-    @Provides
+   /* @Provides
     fun provideMainView(mainActivity: MainActivity): MainView {
         return mainActivity
     }
@@ -16,4 +16,6 @@ class MainActivityModule {
     fun provideMainPresenter(mainView: MainView): MainPresenter {
         return MainPresenterImpl(mainView)
     }
+
+    */
 }

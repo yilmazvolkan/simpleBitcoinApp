@@ -2,8 +2,9 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
-apply plugin: 'kotlin-kapt'
+
 
 android {
     compileSdkVersion 29
@@ -27,7 +28,6 @@ android {
 
     repositories {
         maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.google.com' }
         google()
     }
     dataBinding {
@@ -61,11 +61,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // Dependency Injection
-    implementation "com.google.dagger:dagger:2.24"
-    implementation "com.google.dagger:dagger-android:2.15"
-    implementation "com.google.dagger:dagger-android-support:2.13"
-    kapt "com.google.dagger:dagger-compiler:2.13"
-    kapt "com.google.dagger:dagger-android-processor:2.13"
+    // Dagger 2
+    implementation "com.google.dagger:dagger:2.26"
+    implementation "com.google.dagger:dagger-android-support:2.26"
+    kapt "com.google.dagger:dagger-compiler:2.26"
+    kapt "com.google.dagger:dagger-android-processor:2.26"
 
     // Chart library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

@@ -1,11 +1,18 @@
 package com.yilmazvolkan.simplebitcoinapp
 
-import com.yilmazvolkan.simplebitcoinapp.dagger.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
 
-class BitcoinApplication : DaggerApplication() {
-    override fun applicationInjector(): AndroidInjector<out BitcoinApplication?> {
-        return DaggerAppComponent.builder().create(this)
+class BitcoinApplication : Application() {
+
+    companion object {
+        lateinit var instance: BitcoinApplication
+    }
+
+    init {
+        instance = this
+    }
+
+    override fun onCreate() {
+        super.onCreate()
     }
 }
