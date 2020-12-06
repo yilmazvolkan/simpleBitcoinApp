@@ -7,7 +7,7 @@ import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class CoinViewModel(app: Application) : ViewModel() {
+class CoinViewModel : ViewModel() {
 
     @Inject
     lateinit var repository: BitcoinRepository

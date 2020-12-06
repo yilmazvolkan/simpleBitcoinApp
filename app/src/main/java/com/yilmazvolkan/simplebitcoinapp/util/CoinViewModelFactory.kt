@@ -11,7 +11,7 @@ class CoinViewModelFactory(val app: Application) :
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (AndroidViewModel::class.java.isAssignableFrom(modelClass)) {
-            return CoinViewModel(app) as T
+            return CoinViewModel() as T
         }
         return super.create(modelClass)
     }
