@@ -3,7 +3,7 @@
 Simple Bitcoin Application is created to view and analyze changes in Bitcoin value against USD in the last year. A simple UI is designed for application to make it user-friendly and easy to use. User can zoom in/out and move in the graph to see more close changes and recent values. 
 
 ## Application Notes
-I used RoomDB like a cache in this application. Therefore it is the truth point, which is I show data from the local database. If local database is empty, system fetches from remote data source and transfers to local database.
+I used RoomDB like a cache in this application. It is the truth point, therefore system shows data from the local database. If local database is empty, system fetches from remote data source and transfers to local database.
 
 I used ktlint for code formatting so that my code will be clean and coherent with the official kotlin coding convention.
 
@@ -13,9 +13,9 @@ I used ktlint for code formatting so that my code will be clean and coherent wit
 </p>
 
 ## To Do
-If I have enough time,
+If I had enough time,
 
-* I would create test cases with Mockito and Expresso for repository class, view model and UIs.
+* I would create test cases with Mockito and Expresso for applications classes such as repository class, view model and UIs.
 * I would try multi modular structure for each feature.
 
 ## Future Work
