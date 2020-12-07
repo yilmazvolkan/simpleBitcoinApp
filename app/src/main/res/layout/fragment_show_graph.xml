@@ -11,7 +11,6 @@
         android:focusable="true"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -85,7 +84,7 @@
                 android:paddingBottom="@dimen/period_border_vertical"
                 android:paddingStart="@dimen/period_border_horizontal"
                 android:paddingEnd="@dimen/period_border_horizontal"
-                android:text="@string/yearly"
+                android:text="@string/period_year"
                 android:textSize="@dimen/period_border_text_size"/>
         </RelativeLayout>
 
@@ -102,12 +101,10 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/chart_item_margin_vertical"
             android:layout_marginBottom="@dimen/chart_item_margin_vertical"
-            android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline_first"
             app:layout_constraintBottom_toTopOf="@id/guideline_second"/>
-
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_second"

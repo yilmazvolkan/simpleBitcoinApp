@@ -1,10 +1,10 @@
 package com.yilmazvolkan.simplebitcoinapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -72,7 +72,11 @@ class ShowGraphFragment : Fragment() {
         repository.isError.observe(viewLifecycleOwner, { isError ->
             isError.let {
                 if (it) {
-                    // TODO disableViewsOnError()
+                    Toast.makeText(
+                            requireContext(),
+                            getString(R.string.fetch_data_error_text),
+                            Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     binding.fetchProgress.visibility = View.VISIBLE
                 }
@@ -86,7 +90,11 @@ class ShowGraphFragment : Fragment() {
                     loadDataIntoChart(it)
                     binding.fetchProgress.visibility = View.GONE
                 } else {
-                    // TODO disableViewsOnError()
+                    Toast.makeText(
+                            requireContext(),
+                            getString(R.string.empty_data_error_text),
+                            Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
@@ -101,7 +109,7 @@ class ShowGraphFragment : Fragment() {
             dates.add(value.x)
         }
 
-        val lineDataSet = LineDataSet(entries, "Bitcoin")
+        val lineDataSet = LineDataSet(entries, getString(R.string.coin_name))
 
         lineDataSet.setDrawValues(false)
         lineDataSet.setDrawFilled(true)
@@ -111,8 +119,6 @@ class ShowGraphFragment : Fragment() {
         lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.chart_line)
         binding.lineChart.data = LineData(lineDataSet)
         binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
-
-        Log.d("TEST", "chart is loaded")
 
         initChartFeatures(dates)
     }
@@ -134,10 +140,11 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.setTouchEnabled(true)
         binding.lineChart.setPinchZoom(true)
 
-        binding.lineChart.description.text = "Days"
+        binding.lineChart.description.text = getString(R.string.interval_day)
         binding.lineChart.description.textColor =
                 ContextCompat.getColor(requireContext(), R.color.gray)
-        binding.lineChart.setNoDataText("No coin data yet!")
+        binding.lineChart.setNoDataText(getString(R.string.no_data_error_text))
+        binding.lineChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.chart_line))
 
         val markerView = CustomMarker(requireContext(), R.layout.marker_view, dates)
         markerView.chartView = binding.lineChart // For bounds control

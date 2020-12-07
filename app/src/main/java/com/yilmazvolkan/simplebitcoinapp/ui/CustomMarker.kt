@@ -35,7 +35,6 @@ class CustomMarker(context: Context, layoutResource: Int, private val dates: Arr
     }
 
     private fun getXOffset(xPos: Float): Float {
-
         // This will center the marker-view horizontally
         val minOffset = 50
         if (xPos < minOffset) return 0f

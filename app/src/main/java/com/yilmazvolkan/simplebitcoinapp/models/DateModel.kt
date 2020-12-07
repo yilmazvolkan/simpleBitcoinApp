@@ -27,7 +27,7 @@ class DateModel {
         editor.putString(EDITOR_HOLDER_NAME, formatter.format(currentTime))
         editor.apply()
 
-        Log.d("TEST", "day updated")
+        Log.d("Day", "Day updated.")
     }
 
     fun checkDates(): Boolean {
@@ -39,8 +39,8 @@ class DateModel {
             bitcoinApplication.getSharedPreferences(PREFERENCE_HOLDER_NAME, Context.MODE_PRIVATE)
         val checkedDate = sharedPreference.getString(EDITOR_HOLDER_NAME, "")
 
-        Log.d("TEST", currentDate)
-        Log.d("TEST", checkedDate.toString())
+        Log.d("Day", "Current: $currentDate")
+        Log.d("Day", "Checked: ${checkedDate.toString()}")
         return currentDate == checkedDate
     }
 
