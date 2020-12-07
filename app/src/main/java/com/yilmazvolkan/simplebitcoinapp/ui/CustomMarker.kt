@@ -3,21 +3,22 @@ package com.yilmazvolkan.simplebitcoinapp.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.WindowManager
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import kotlinx.android.synthetic.main.marker_view.view.*
+import java.util.*
 import kotlin.math.round
 
 
 @SuppressLint("ViewConstructor")
-class CustomMarker(context: Context, layoutResource: Int) : MarkerView(context, layoutResource) {
+class CustomMarker(context: Context, layoutResource: Int, private val dates: ArrayList<String>) : MarkerView(context, layoutResource) {
     override fun refreshContent(entry: Entry?, highlight: Highlight?) {
         val value = entry?.y?.toDouble() ?: 0.0
         tvPrice.text = value.round(4).toString()
+        tvDate.text = entry?.x?.let { dates[it.toInt()] }
         super.refreshContent(entry, highlight)
     }
 

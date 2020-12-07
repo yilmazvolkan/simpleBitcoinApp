@@ -26,6 +26,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+
 class ShowGraphFragment : Fragment() {
 
     @Inject
@@ -35,9 +36,9 @@ class ShowGraphFragment : Fragment() {
     private lateinit var coinViewModel: CoinViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         return binding.root
     }
@@ -53,8 +54,8 @@ class ShowGraphFragment : Fragment() {
     private fun initializeViewModel() {
         activity?.let {
             coinViewModel = ViewModelProvider(
-                this,
-                CoinViewModelFactory(bitcoinApplication)
+                    this,
+                    CoinViewModelFactory(bitcoinApplication)
             ).get(CoinViewModel::class.java)
         }
     }
@@ -96,12 +97,13 @@ class ShowGraphFragment : Fragment() {
 
     private fun loadDataIntoChart(coinList: List<BitcoinData>) {
         val entries = ArrayList<Entry>()
+        val dates = ArrayList<String>()
 
         for ((index, value) in coinList.withIndex()) {
-
-            Log.d("TEST33", convertToDate(value.x))
             entries.add(Entry(index.toFloat(), value.y))
+            dates.add(convertToDate(value.x))
         }
+
         val lineDataSet = LineDataSet(entries, "Bitcoin")
 
         lineDataSet.setDrawValues(false)
@@ -115,10 +117,10 @@ class ShowGraphFragment : Fragment() {
 
         Log.d("TEST", "chart is loaded")
 
-        initChartFeatures()
+        initChartFeatures(dates)
     }
 
-    private fun initChartFeatures() {
+    private fun initChartFeatures(dates: ArrayList<String>) {
         binding.lineChart.xAxis.labelRotationAngle = 0f
         binding.lineChart.xAxis.isEnabled = false
 
@@ -126,9 +128,9 @@ class ShowGraphFragment : Fragment() {
 
         binding.lineChart.axisLeft.setDrawGridLines(false)
         binding.lineChart.axisLeft.textColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
+                ContextCompat.getColor(requireContext(), R.color.gray)
         binding.lineChart.axisLeft.axisLineColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
+                ContextCompat.getColor(requireContext(), R.color.gray)
 
         binding.lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.gray)
 
@@ -137,10 +139,10 @@ class ShowGraphFragment : Fragment() {
 
         binding.lineChart.description.text = "Days"
         binding.lineChart.description.textColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
+                ContextCompat.getColor(requireContext(), R.color.gray)
         binding.lineChart.setNoDataText("No coin data yet!")
 
-        val markerView = CustomMarker(requireContext(), R.layout.marker_view)
+        val markerView = CustomMarker(requireContext(), R.layout.marker_view, dates)
         markerView.chartView = binding.lineChart // For bounds control
         binding.lineChart.marker = markerView
 
@@ -149,11 +151,12 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.invalidate()
     }
 
-    private fun convertToDate(unixSeconds: Long): String{
+    private fun convertToDate(unixSeconds: Long): String {
         val date = Date(unixSeconds * 1000L)
         val sdf = SimpleDateFormat("dd-MM", Locale.getDefault())
         return sdf.format(date).toString()
     }
+
     companion object {
         fun newInstance(): ShowGraphFragment {
             return ShowGraphFragment()
