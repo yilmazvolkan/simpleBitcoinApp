@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         showGraphFragment = ShowGraphFragment.newInstance()
         if (showGraphFragment != null && this.isFinishing.not()) {
             supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, showGraphFragment!!)
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, showGraphFragment!!)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
         }
     }
 }

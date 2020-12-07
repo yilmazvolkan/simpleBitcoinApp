@@ -18,6 +18,11 @@ class CoinViewModel : ViewModel() {
         compositeDisposable.add(repository.fetchDataFromDatabase())
     }
 
+    fun checkDataAgain(){
+        compositeDisposable.clear()
+        compositeDisposable.add(repository.fetchDataFromDatabase())
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()

@@ -46,6 +46,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_error"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:text="@string/no_data_error_text"
+            android:textSize="@dimen/error_text_size"/>
+
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_zero"
             android:layout_width="wrap_content"
@@ -54,7 +69,7 @@
             app:layout_constraintGuide_begin="@dimen/toolbar_height"/>
 
         <RelativeLayout
-            android:id="@+id/effectItem"
+            android:id="@+id/text_view_periods"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/guideline_zero"
@@ -66,15 +81,15 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/textViewTopToRecord"
-                android:layout_alignEnd="@+id/textViewTopToRecord"
-                android:layout_alignTop="@+id/textViewTopToRecord"
-                android:layout_alignBottom="@+id/textViewTopToRecord"
+                android:layout_alignStart="@+id/text_view_period"
+                android:layout_alignEnd="@+id/text_view_period"
+                android:layout_alignTop="@+id/text_view_period"
+                android:layout_alignBottom="@+id/text_view_period"
                 android:background="@drawable/selection_border">
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewTopToRecord"
+                android:id="@+id/text_view_period"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

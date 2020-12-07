@@ -63,6 +63,7 @@ class ShowGraphFragment : Fragment() {
             isLoading.let {
                 if (it) {
                     binding.lineChart.visibility = View.GONE
+                    binding.textViewPeriods.visibility = View.GONE
                     binding.fetchProgress.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.GONE
@@ -77,6 +78,7 @@ class ShowGraphFragment : Fragment() {
                             getString(R.string.fetch_data_error_text),
                             Toast.LENGTH_SHORT
                     ).show()
+                    binding.textViewError.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.VISIBLE
                 }
@@ -86,7 +88,9 @@ class ShowGraphFragment : Fragment() {
             coinValues.let {
                 if (it != null && it.isNotEmpty()) {
                     binding.fetchProgress.visibility = View.VISIBLE
+                    binding.textViewPeriods.visibility = View.VISIBLE
                     binding.lineChart.visibility = View.VISIBLE
+                    binding.textViewError.visibility = View.GONE
                     loadDataIntoChart(it)
                     binding.fetchProgress.visibility = View.GONE
                 } else {
@@ -155,6 +159,10 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.invalidate()
     }
 
+    override fun onResume() {
+        coinViewModel.checkDataAgain()
+        super.onResume()
+    }
 
     companion object {
         fun newInstance(): ShowGraphFragment {
