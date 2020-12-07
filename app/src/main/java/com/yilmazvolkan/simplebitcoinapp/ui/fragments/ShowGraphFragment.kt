@@ -152,7 +152,6 @@ class ShowGraphFragment : Fragment() {
     private fun convertToDate(unixSeconds: Long): String{
         val date = Date(unixSeconds * 1000L)
         val sdf = SimpleDateFormat("dd-MM", Locale.getDefault())
-
         return sdf.format(date).toString()
     }
     companion object {
