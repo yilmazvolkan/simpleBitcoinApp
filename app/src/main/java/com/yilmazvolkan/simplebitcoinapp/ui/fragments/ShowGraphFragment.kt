@@ -73,11 +73,6 @@ class ShowGraphFragment : Fragment() {
         repository.isError.observe(viewLifecycleOwner, { isError ->
             isError.let {
                 if (it) {
-                    Toast.makeText(
-                            requireContext(),
-                            getString(R.string.fetch_data_error_text),
-                            Toast.LENGTH_SHORT
-                    ).show()
                     binding.textViewError.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.VISIBLE
