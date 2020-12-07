@@ -108,7 +108,7 @@ class ShowGraphFragment : Fragment() {
         lineDataSet.setDrawCircles(false)
         lineDataSet.lineWidth = 2f
         lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.chart_background)
-        lineDataSet.fillAlpha = ContextCompat.getColor(requireContext(), R.color.chart_line)
+        lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.chart_line)
         binding.lineChart.data = LineData(lineDataSet)
         binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
 
