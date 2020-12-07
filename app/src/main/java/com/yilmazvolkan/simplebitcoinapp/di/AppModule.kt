@@ -4,8 +4,8 @@ import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApi
 import com.yilmazvolkan.simplebitcoinapp.data.api.BitcoinApiService
 import com.yilmazvolkan.simplebitcoinapp.data.database.BitcoinDatabase
-import com.yilmazvolkan.simplebitcoinapp.models.DateModel
 import com.yilmazvolkan.simplebitcoinapp.repository.BitcoinRepository
+import com.yilmazvolkan.simplebitcoinapp.repository.DateRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,5 +32,5 @@ class AppModule {
     fun provideDao(bitcoinDatabase: BitcoinDatabase) = bitcoinDatabase.dataDao()
 
     @Provides
-    fun provideDateModel() = DateModel()
+    fun provideDateRepository() = DateRepository()
 }

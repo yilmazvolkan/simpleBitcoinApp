@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.ui.fragments.ShowGraphFragment
 
-
 class MainActivity : AppCompatActivity() {
-    private var showGraphFragment: ShowGraphFragment? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -16,13 +13,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startFragment() {
-        showGraphFragment = ShowGraphFragment.newInstance()
-        if (showGraphFragment != null && this.isFinishing.not()) {
+        val showGraphFragment = ShowGraphFragment.newInstance()
+        if (this.isFinishing.not()) {
             supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, showGraphFragment!!)
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, showGraphFragment)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
         }
     }
 }

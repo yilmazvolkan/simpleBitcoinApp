@@ -20,4 +20,18 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/chart_item_marker_text_size" />
 
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/chart_item_market_margin_horizontal"
+        android:layout_marginRight="@dimen/chart_item_market_margin_horizontal"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/chart_item_marker_text_size" />
+
 </LinearLayout>

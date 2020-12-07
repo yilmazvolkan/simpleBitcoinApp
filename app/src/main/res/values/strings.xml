@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Simple Bitcoin App</string>
 
-    <string name="toolbar_text">Coin App</string>
+    <string name="toolbar_text">BTC / USD</string>
+
+    <string name="coin_name">Bitcoin</string>
+    <string name="period_year">Yearly</string>
+    <string name="interval_day">Days</string>
+
+    <string name="no_data_error_text">No coin data yet!</string>
+    <string name="fetch_data_error_text">Could not fetched the data!</string>
+    <string name="empty_data_error_text">Data seems to be invalid!</string>
 </resources>

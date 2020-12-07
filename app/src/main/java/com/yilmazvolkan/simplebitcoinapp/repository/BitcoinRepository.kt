@@ -9,7 +9,6 @@ import com.yilmazvolkan.simplebitcoinapp.data.database.toDataEntityList
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataList
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
-import com.yilmazvolkan.simplebitcoinapp.models.DateModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -26,7 +25,7 @@ class BitcoinRepository {
     lateinit var bitcoinDao: DataDao
 
     @Inject
-    lateinit var dateModel: DateModel
+    lateinit var dateRepository: DateRepository
 
     val bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
     val isInProgress by lazy { MutableLiveData<Boolean>() }
@@ -54,14 +53,14 @@ class BitcoinRepository {
 
             override fun onError(t: Throwable?) {
                 isInProgress.postValue(true)
-                Log.e("insertData()", "BitcoinResult error: ${t?.message}")
+                Log.e("InsertData", "BitcoinResult error: ${t?.message}")
                 isError.postValue(true)
                 isInProgress.postValue(false)
             }
 
             override fun onComplete() {
-                Log.v("insertData()", "insert success")
-                dateModel.updateTodayDate()
+                Log.v("InsertData", "insert success")
+                dateRepository.updateTodayDate()
                 getBitcoinQuery()
             }
         }
@@ -75,19 +74,18 @@ class BitcoinRepository {
             .subscribe(
                 { dataEntityList ->
                     isInProgress.postValue(true)
-                    if (dataEntityList != null && dataEntityList.isNotEmpty() && dateModel.checkDates()) {
+                    if (dataEntityList != null && dataEntityList.isNotEmpty() && dateRepository.checkDates()) {
                         isError.postValue(false)
                         bitcoinData.postValue(dataEntityList.toDataList())
-                        Log.d("TEST", "Loaded from database")
+                        Log.d("Load", "Loaded from database.")
                     } else {
                         clearAll()
                     }
                     isInProgress.postValue(false)
-
                 },
                 {
                     isInProgress.postValue(true)
-                    Log.e("getBitcoinQuery()", "Database error: ${it.message}")
+                    Log.e("BitcoinQuery", "Database error: ${it.message}")
                     isError.postValue(true)
                     isInProgress.postValue(false)
                 }
@@ -99,8 +97,8 @@ class BitcoinRepository {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 insertData()
-                Log.d("TEST", "Loaded from remote")
-            }, {/*error*/ })
+                Log.d("Load", "Loaded from remote.")
+            }, { /*error*/ })
     }
 
     private fun clearTable(): Observable<Boolean> {

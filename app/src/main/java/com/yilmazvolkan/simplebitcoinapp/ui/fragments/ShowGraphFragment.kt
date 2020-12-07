@@ -1,10 +1,10 @@
 package com.yilmazvolkan.simplebitcoinapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,10 +21,7 @@ import com.yilmazvolkan.simplebitcoinapp.ui.CustomMarker
 import com.yilmazvolkan.simplebitcoinapp.ui.inflate
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class ShowGraphFragment : Fragment() {
 
@@ -46,6 +43,7 @@ class ShowGraphFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         DaggerAppComponent.create().inject(this)
 
+        initializeChartFeatures()
         initializeViewModel()
         observeCoinViewModel()
     }
@@ -53,18 +51,18 @@ class ShowGraphFragment : Fragment() {
     private fun initializeViewModel() {
         activity?.let {
             coinViewModel = ViewModelProvider(
-                this,
-                CoinViewModelFactory(bitcoinApplication)
+                    this,
+                    CoinViewModelFactory(bitcoinApplication)
             ).get(CoinViewModel::class.java)
         }
     }
-
 
     private fun observeCoinViewModel() = with(coinViewModel) {
         repository.isInProgress.observe(viewLifecycleOwner, { isLoading ->
             isLoading.let {
                 if (it) {
                     binding.lineChart.visibility = View.GONE
+                    binding.textViewPeriods.visibility = View.GONE
                     binding.fetchProgress.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.GONE
@@ -74,7 +72,7 @@ class ShowGraphFragment : Fragment() {
         repository.isError.observe(viewLifecycleOwner, { isError ->
             isError.let {
                 if (it) {
-                    // TODO disableViewsOnError()
+                    binding.textViewError.visibility = View.VISIBLE
                 } else {
                     binding.fetchProgress.visibility = View.VISIBLE
                 }
@@ -84,11 +82,17 @@ class ShowGraphFragment : Fragment() {
             coinValues.let {
                 if (it != null && it.isNotEmpty()) {
                     binding.fetchProgress.visibility = View.VISIBLE
+                    binding.textViewPeriods.visibility = View.VISIBLE
                     binding.lineChart.visibility = View.VISIBLE
+                    binding.textViewError.visibility = View.GONE
                     loadDataIntoChart(it)
                     binding.fetchProgress.visibility = View.GONE
                 } else {
-                    // TODO disableViewsOnError()
+                    Toast.makeText(
+                            requireContext(),
+                            getString(R.string.empty_data_error_text),
+                            Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
@@ -96,29 +100,32 @@ class ShowGraphFragment : Fragment() {
 
     private fun loadDataIntoChart(coinList: List<BitcoinData>) {
         val entries = ArrayList<Entry>()
+        val dates = ArrayList<Long>()
 
         for ((index, value) in coinList.withIndex()) {
-
-            Log.d("TEST33", convertToDate(value.x))
             entries.add(Entry(index.toFloat(), value.y))
+            dates.add(value.x)
         }
-        val lineDataSet = LineDataSet(entries, "Bitcoin")
+
+        val lineDataSet = LineDataSet(entries, getString(R.string.coin_name))
 
         lineDataSet.setDrawValues(false)
         lineDataSet.setDrawFilled(true)
         lineDataSet.setDrawCircles(false)
         lineDataSet.lineWidth = 2f
         lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.chart_background)
-        lineDataSet.fillAlpha = ContextCompat.getColor(requireContext(), R.color.chart_line)
+        lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.chart_line)
+
         binding.lineChart.data = LineData(lineDataSet)
         binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
 
-        Log.d("TEST", "chart is loaded")
-
-        initChartFeatures()
+        val markerView = CustomMarker(requireContext(), R.layout.marker_view, dates)
+        markerView.chartView = binding.lineChart // For bounds control
+        binding.lineChart.marker = markerView
+        binding.lineChart.invalidate()
     }
 
-    private fun initChartFeatures() {
+    private fun initializeChartFeatures() {
         binding.lineChart.xAxis.labelRotationAngle = 0f
         binding.lineChart.xAxis.isEnabled = false
 
@@ -126,35 +133,29 @@ class ShowGraphFragment : Fragment() {
 
         binding.lineChart.axisLeft.setDrawGridLines(false)
         binding.lineChart.axisLeft.textColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
+                ContextCompat.getColor(requireContext(), R.color.gray)
         binding.lineChart.axisLeft.axisLineColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
+                ContextCompat.getColor(requireContext(), R.color.gray)
 
         binding.lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.gray)
 
         binding.lineChart.setTouchEnabled(true)
         binding.lineChart.setPinchZoom(true)
 
-        binding.lineChart.description.text = "Days"
+        binding.lineChart.description.text = getString(R.string.interval_day)
         binding.lineChart.description.textColor =
-            ContextCompat.getColor(requireContext(), R.color.gray)
-        binding.lineChart.setNoDataText("No coin data yet!")
-
-        val markerView = CustomMarker(requireContext(), R.layout.marker_view)
-        markerView.chartView = binding.lineChart // For bounds control
-        binding.lineChart.marker = markerView
+                ContextCompat.getColor(requireContext(), R.color.gray)
+        binding.lineChart.setNoDataText(getString(R.string.no_data_error_text))
+        binding.lineChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.chart_line))
 
         binding.lineChart.animateX(1800, Easing.EaseInExpo)
-
-        binding.lineChart.invalidate()
     }
 
-    private fun convertToDate(unixSeconds: Long): String{
-        val date = Date(unixSeconds * 1000L)
-        val sdf = SimpleDateFormat("dd-MM", Locale.getDefault())
-
-        return sdf.format(date).toString()
+    override fun onResume() {
+        coinViewModel.checkDataAgain()
+        super.onResume()
     }
+
     companion object {
         fun newInstance(): ShowGraphFragment {
             return ShowGraphFragment()

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-const val DATABASE_NAME = "bitcoin.db" //Room Database
+const val DATABASE_NAME = "bitcoin.db" // Room Database
 
 @Database(entities = [DataEntity::class], version = 1)
 abstract class BitcoinDatabase : RoomDatabase() {
