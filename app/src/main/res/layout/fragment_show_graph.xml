@@ -35,6 +35,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
         <ProgressBar
             android:id="@+id/fetch_progress"
             style="@style/AppTheme"
@@ -46,16 +47,74 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/toolbar_height"/>
+
+        <RelativeLayout
+            android:id="@+id/effectItem"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/guideline_zero"
+            app:layout_constraintBottom_toTopOf="@id/guideline_first"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewTopToRecord"
+                android:layout_alignEnd="@+id/textViewTopToRecord"
+                android:layout_alignTop="@+id/textViewTopToRecord"
+                android:layout_alignBottom="@+id/textViewTopToRecord"
+                android:background="@drawable/selection_border">
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewTopToRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:paddingTop="@dimen/period_border_vertical"
+                android:paddingBottom="@dimen/period_border_vertical"
+                android:paddingStart="@dimen/period_border_horizontal"
+                android:paddingEnd="@dimen/period_border_horizontal"
+                android:text="@string/yearly"
+                android:textSize="@dimen/period_border_text_size"/>
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15"/>
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/chart_item_height"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/chart_item_margin_vertical"
             android:layout_marginBottom="@dimen/chart_item_margin_vertical"
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/guideline_first"
+            app:layout_constraintBottom_toTopOf="@id/guideline_second"/>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

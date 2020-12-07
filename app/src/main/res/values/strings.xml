@@ -2,4 +2,5 @@
     <string name="app_name">Simple Bitcoin App</string>
 
     <string name="toolbar_text">Coin App</string>
+    <string name="yearly">Yearly</string>
 </resources>

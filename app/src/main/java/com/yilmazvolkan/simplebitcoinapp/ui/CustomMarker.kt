@@ -9,16 +9,17 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import kotlinx.android.synthetic.main.marker_view.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
 
 
 @SuppressLint("ViewConstructor")
-class CustomMarker(context: Context, layoutResource: Int, private val dates: ArrayList<String>) : MarkerView(context, layoutResource) {
+class CustomMarker(context: Context, layoutResource: Int, private val dates: ArrayList<Long>) : MarkerView(context, layoutResource) {
     override fun refreshContent(entry: Entry?, highlight: Highlight?) {
         val value = entry?.y?.toDouble() ?: 0.0
         tvPrice.text = value.round(4).toString()
-        tvDate.text = entry?.x?.let { dates[it.toInt()] }
+        tvDate.text = entry?.x?.let { convertToDate(dates[it.toInt()]) }
         super.refreshContent(entry, highlight)
     }
 
@@ -44,5 +45,11 @@ class CustomMarker(context: Context, layoutResource: Int, private val dates: Arr
         //For right hand side
         if (metrics.widthPixels - xPos < minOffset) return -width.toFloat() else if (metrics.widthPixels - xPos < 0) return -width.toFloat()
         return -(width / 2).toFloat()
+    }
+
+    private fun convertToDate(unixSeconds: Long): String {
+        val date = Date(unixSeconds * 1000L)
+        val sdf = SimpleDateFormat("dd-MM", Locale.getDefault())
+        return sdf.format(date).toString()
     }
 }
