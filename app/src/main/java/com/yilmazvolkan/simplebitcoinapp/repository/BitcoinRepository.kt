@@ -98,7 +98,7 @@ class BitcoinRepository {
             .subscribe({
                 insertData()
                 Log.d("Load", "Loaded from remote.")
-            }, {/*error*/ })
+            }, { /*error*/ })
     }
 
     private fun clearTable(): Observable<Boolean> {

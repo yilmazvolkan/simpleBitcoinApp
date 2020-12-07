@@ -23,7 +23,6 @@ import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModel
 import com.yilmazvolkan.simplebitcoinapp.viewModels.CoinViewModelFactory
 import javax.inject.Inject
 
-
 class ShowGraphFragment : Fragment() {
 
     @Inject
@@ -33,9 +32,9 @@ class ShowGraphFragment : Fragment() {
     private lateinit var coinViewModel: CoinViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return binding.root
     }
@@ -57,7 +56,6 @@ class ShowGraphFragment : Fragment() {
             ).get(CoinViewModel::class.java)
         }
     }
-
 
     private fun observeCoinViewModel() = with(coinViewModel) {
         repository.isInProgress.observe(viewLifecycleOwner, { isLoading ->

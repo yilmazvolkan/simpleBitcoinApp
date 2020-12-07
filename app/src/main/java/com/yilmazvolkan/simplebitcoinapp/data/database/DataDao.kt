@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Single
 
-
 @Dao
 interface DataDao {
 

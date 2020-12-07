@@ -5,7 +5,8 @@ import android.util.Log
 import com.yilmazvolkan.simplebitcoinapp.BitcoinApplication
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 class DateRepository {
@@ -40,7 +41,7 @@ class DateRepository {
         val checkedDate = sharedPreference.getString(EDITOR_HOLDER_NAME, "")
 
         Log.d("Day", "Current: $currentDate")
-        Log.d("Day", "Checked: ${checkedDate.toString()}")
+        Log.d("Day", "Checked: $checkedDate")
         return currentDate == checkedDate
     }
 

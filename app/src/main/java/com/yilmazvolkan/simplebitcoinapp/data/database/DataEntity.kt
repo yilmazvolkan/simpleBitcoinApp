@@ -15,5 +15,3 @@ data class DataEntity(
     @ColumnInfo(name = "value")
     val y: Float
 )
-
-

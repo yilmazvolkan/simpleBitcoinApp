@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yilmazvolkan.simplebitcoinapp.R
 import com.yilmazvolkan.simplebitcoinapp.ui.fragments.ShowGraphFragment
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
