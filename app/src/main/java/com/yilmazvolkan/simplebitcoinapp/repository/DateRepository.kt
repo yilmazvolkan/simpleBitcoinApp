@@ -1,4 +1,4 @@
-package com.yilmazvolkan.simplebitcoinapp.models
+package com.yilmazvolkan.simplebitcoinapp.repository
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class DateModel {
+class DateRepository {
 
     @Inject
     lateinit var bitcoinApplication: BitcoinApplication

@@ -44,6 +44,7 @@ class ShowGraphFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         DaggerAppComponent.create().inject(this)
 
+        initializeChartFeatures()
         initializeViewModel()
         observeCoinViewModel()
     }
@@ -116,13 +117,17 @@ class ShowGraphFragment : Fragment() {
         lineDataSet.lineWidth = 2f
         lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.chart_background)
         lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.chart_line)
+
         binding.lineChart.data = LineData(lineDataSet)
         binding.lineChart.xAxis.axisMaximum = coinList.size + 0.5f
 
-        initChartFeatures(dates)
+        val markerView = CustomMarker(requireContext(), R.layout.marker_view, dates)
+        markerView.chartView = binding.lineChart // For bounds control
+        binding.lineChart.marker = markerView
+        binding.lineChart.invalidate()
     }
 
-    private fun initChartFeatures(dates: ArrayList<Long>) {
+    private fun initializeChartFeatures() {
         binding.lineChart.xAxis.labelRotationAngle = 0f
         binding.lineChart.xAxis.isEnabled = false
 
@@ -145,13 +150,7 @@ class ShowGraphFragment : Fragment() {
         binding.lineChart.setNoDataText(getString(R.string.no_data_error_text))
         binding.lineChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.chart_line))
 
-        val markerView = CustomMarker(requireContext(), R.layout.marker_view, dates)
-        markerView.chartView = binding.lineChart // For bounds control
-        binding.lineChart.marker = markerView
-
         binding.lineChart.animateX(1800, Easing.EaseInExpo)
-
-        binding.lineChart.invalidate()
     }
 
     override fun onResume() {

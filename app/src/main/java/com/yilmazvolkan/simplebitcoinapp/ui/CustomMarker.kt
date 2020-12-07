@@ -23,7 +23,6 @@ class CustomMarker(context: Context, layoutResource: Int, private val dates: Arr
         super.refreshContent(entry, highlight)
     }
 
-
     private fun Double.round(decimals: Int): Double {
         var multiplier = 1.0
         repeat(decimals) { multiplier *= 10 }

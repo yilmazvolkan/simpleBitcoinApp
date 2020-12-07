@@ -9,7 +9,6 @@ import com.yilmazvolkan.simplebitcoinapp.data.database.toDataEntityList
 import com.yilmazvolkan.simplebitcoinapp.data.database.toDataList
 import com.yilmazvolkan.simplebitcoinapp.di.DaggerAppComponent
 import com.yilmazvolkan.simplebitcoinapp.models.BitcoinData
-import com.yilmazvolkan.simplebitcoinapp.models.DateModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -26,7 +25,7 @@ class BitcoinRepository {
     lateinit var bitcoinDao: DataDao
 
     @Inject
-    lateinit var dateModel: DateModel
+    lateinit var dateRepository: DateRepository
 
     val bitcoinData by lazy { MutableLiveData<List<BitcoinData>>() }
     val isInProgress by lazy { MutableLiveData<Boolean>() }
@@ -61,7 +60,7 @@ class BitcoinRepository {
 
             override fun onComplete() {
                 Log.v("InsertData", "insert success")
-                dateModel.updateTodayDate()
+                dateRepository.updateTodayDate()
                 getBitcoinQuery()
             }
         }
@@ -75,7 +74,7 @@ class BitcoinRepository {
             .subscribe(
                 { dataEntityList ->
                     isInProgress.postValue(true)
-                    if (dataEntityList != null && dataEntityList.isNotEmpty() && dateModel.checkDates()) {
+                    if (dataEntityList != null && dataEntityList.isNotEmpty() && dateRepository.checkDates()) {
                         isError.postValue(false)
                         bitcoinData.postValue(dataEntityList.toDataList())
                         Log.d("Load", "Loaded from database.")
@@ -83,7 +82,6 @@ class BitcoinRepository {
                         clearAll()
                     }
                     isInProgress.postValue(false)
-
                 },
                 {
                     isInProgress.postValue(true)
